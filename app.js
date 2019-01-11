@@ -61,7 +61,7 @@ app.get('/logout', function(req, res, next) {
 
 app.get('/login', (req, res) => res.send('<a href="/">login</a>'))
 app.get('/', function(req, res) {
-    res.send('Login Successful! \n'+ JSON.stringify(req) );
+    res.send('Login Successful! \n session: '+ req.session );
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
