@@ -61,7 +61,16 @@ app.get('/logout', function(req, res, next) {
 
 app.get('/login', (req, res) => res.send('<a href="/">login</a>'))
 app.get('/', function(req, res) {
-    res.send('Login Successful! \n session: '+ req.session );
+    let str = ''
+    for (const key in req) {
+        if (req.hasOwnProperty(key)) {
+            const element = req[key];
+            str+=element;
+            console.log(element);
+            
+        }
+    }
+    res.send('Login Successful! \n session: '+ str );
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
