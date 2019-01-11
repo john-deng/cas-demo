@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var MemoryStore = require('session-memory-store')(session);
 
 var app = express();
-const port = 3000;
+const port = 5000;
 app.use(cookieParser());
 app.use(session({
   name: 'NSESSIONID',
