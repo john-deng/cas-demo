@@ -1,0 +1,21 @@
+{
+  "dependencies": {},
+  "name": "cas-demo",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {
+    "body-parser": "^1.18.3",
+    "connect-cas2": "^1.2.5",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "session-memory-store": "^0.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
