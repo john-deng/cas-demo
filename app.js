@@ -31,18 +31,7 @@ var casClient = new ConnectCas({
       logout: '/cas/logout',
       proxyCallback: ''
     },
-    redirect: function(req, res) {
-        // 在redirect中， 根据是否有特殊cookie来决定是否跳走
-        console.log('======= req ========')
-        console.log(req)
-        console.log('======= res ========')
-        console.log(res)
-        console.log('======= end ========')
-        if (req.cookies.logoutFrom) {
-          // 返回您想要重定向的路径
-          return url.parse(req.cookies.logoutFrom).pathname;
-        }
-    },
+    redirect: false,
     gateway: false,
     renew: false,
     slo: true,
@@ -71,6 +60,8 @@ app.get('/logout', function(req, res, next) {
 });
 
 app.get('/login', (req, res) => res.send('<a href="/">login</a>'))
-app.get('/', (req, res) => res.send('Login Successful!'))
+app.get('/', function(req, res) {
+    res.send('Login Successful! \n'+ req );
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
