@@ -63,16 +63,17 @@ app.get('/login', (req, res) => res.send('<a href="/">login</a>'))
 app.get('/', function(req, res) {
     console.log('++++++++++++++++++++++ req.sessionID ');
     console.log(req.sessionID);
+
+    console.log('++++++++++++++++++++++ req.session.json ');
+    console.log(req.session.cookie.toJSON());
     
     console.log('================ req.session ');
     
 
     console.log(req.session);
-    console.log(req.session.cookie);
     console.log(req.session.lastUrl);
     console.log(req.session.cas.user);
 
-    console.log(req.session.Session);
     console.log('######################## ');
     
     res.send('Login Successful! \n session: ' );
