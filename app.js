@@ -17,12 +17,11 @@ app.use(session({
 }));
 
 var casClient = new ConnectCas({
-  debug: false,
     ignore: [
       /\/ignore/
     ],
     match: [],
-    servicePrefix: 'http://localhost:3000',
+    servicePrefix: 'https://cas-nodejs-demo.herokuapp.com',
     serverPath: 'https://casserver.herokuapp.com',
     paths: {
       validate: '/cas/validate',
@@ -30,7 +29,7 @@ var casClient = new ConnectCas({
       proxy: '/cas/proxy',
       login: '/cas/login',
       logout: '/cas/logout',
-      proxyCallback: '/'
+      proxyCallback: ''
     },
     redirect: false,
     gateway: false,
@@ -59,5 +58,7 @@ app.get('/logout', function(req, res, next) {
   console.log("logout ...")
   casClient.logout()(req, res, next);
 });
+
+app.get('/', (req, res) => res.send('Login Successful!'))
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
