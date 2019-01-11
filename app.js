@@ -34,9 +34,9 @@ var casClient = new ConnectCas({
     redirect: function(req, res) {
         // 在redirect中， 根据是否有特殊cookie来决定是否跳走
         console.log('======= req ========')
-        console.log(JSON.stringify(req))
+        console.log(req)
         console.log('======= res ========')
-        console.log(JSON.stringify(res))
+        console.log(res)
         console.log('======= end ========')
         if (req.cookies.logoutFrom) {
           // 返回您想要重定向的路径
