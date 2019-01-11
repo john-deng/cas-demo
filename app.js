@@ -31,7 +31,15 @@ var casClient = new ConnectCas({
       logout: '/cas/logout',
       proxyCallback: ''
     },
-    redirect: false,
+    redirect: function(req, res) {
+        // 在redirect中， 根据是否有特殊cookie来决定是否跳走
+        console.log(req)
+        console.log(res)
+        if (req.cookies.logoutFrom) {
+          // 返回您想要重定向的路径
+          return url.parse(req.cookies.logoutFrom).pathname;
+        }
+    },
     gateway: false,
     renew: false,
     slo: true,
