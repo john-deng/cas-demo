@@ -76,7 +76,7 @@ app.get('/', function(req, res) {
 
     console.log('######################## ');
     
-    res.send('Login Successful! \n session: ' );
+    res.send('Login Successful! \nWelcome ' + req.session.cas.user );
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
