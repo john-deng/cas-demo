@@ -1,4 +1,5 @@
 var express = require('express');
+var url = require('url');
 var ConnectCas = require('connect-cas2');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -21,8 +22,8 @@ var casClient = new ConnectCas({
       /\/login/
     ],
     match: [],
-    servicePrefix:  process.env.SVC_PREFIX || 'https://cas-nodejs-demo.herokuapp.com',
-    serverPath: process.env.SERVER_PATH || 'https://casserver.herokuapp.com',
+    servicePrefix:  process.env.SVC_PREFIX || 'http://localhost:3000',
+    serverPath: process.env.SERVER_PATH || 'http://localhost:8080',
     paths: {
       validate: process.env.VALIDATE || '/cas/validate',
       serviceValidate: process.env.SVC_VALIDATE || '/cas/serviceValidate',
@@ -31,7 +32,14 @@ var casClient = new ConnectCas({
       logout: process.env.LOGOUT_PATH || '/cas/logout',
       proxyCallback: ''
     },
-    redirect: false,
+    redirect: function(req, res) {
+      // 在redirect中， 根据是否有特殊cookie来决定是否跳走
+      console.log("redirect ...")
+      if (req.cookies.logoutFrom) {
+        // 返回您想要重定向的路径
+        return url.parse(req.cookies.logoutFrom).pathname;
+      }
+    },
     gateway: false,
     renew: false,
     slo: true,
@@ -56,27 +64,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/logout', function(req, res, next) {
   // Do whatever you like here, then call the logout middleware
   console.log("logout ...")
-  casClient.logout()(req, res, next);
+  var fromWhere = req.get('Referer');
+  var fromWhereUri = url.parse(fromWhere);
+
+  // 根据来源判断是否是你不希望用户注销后登陆的页面，如果是的话，设置设置cookie
+  if (fromWhereUri.pathname.match(/the page you dont want user to login after logout/)) {
+    res.cookie('logoutFrom', fromWhereUri.pathname);
+  }
+  casClient.logout()(req, res);
 });
 
 app.get('/login', (req, res) => res.send('<a href="/">login</a>'))
 app.get('/', function(req, res) {
-    console.log('++++++++++++++++++++++ req.sessionID ');
-    console.log(req.sessionID);
-
-    console.log('++++++++++++++++++++++ req.session.json ');
-    console.log(req.session.cookie.toJSON());
-    
-    console.log('================ req.session ');
-    
-
-    console.log(req.session);
-    console.log(req.session.lastUrl);
-    console.log(req.session.cas.user);
-
-    console.log('######################## ');
-    
-    res.send('User ' + req.session.cas.user  +' Login Successful! ');
+    console.log('+++ req.sessionID: ' + req.sessionID);
+    console.log('=== req.session: \n' + req.session);
+    res.send('User ' + req.session.cas.user  +' Login Successful!  <a href="/logout">Logout</a>');
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
