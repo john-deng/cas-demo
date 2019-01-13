@@ -67,10 +67,10 @@ app.get('/logout', function(req, res, next) {
   var fromWhere = req.get('Referer');
   var fromWhereUri = url.parse(fromWhere);
 
-  // 根据来源判断是否是你不希望用户注销后登陆的页面，如果是的话，设置设置cookie
-  if (fromWhereUri.pathname.match(/the page you dont want user to login after logout/)) {
-    res.cookie('logoutFrom', fromWhereUri.pathname);
-  }
+  // 根据来源判断是否是你不希望用户注销后跳转登陆的页面，如果是的话，设置设置cookie
+  // if (fromWhereUri.pathname.match(/\//)) {
+  //   res.cookie('logoutFrom', fromWhereUri.pathname);
+  // }
   casClient.logout()(req, res);
 });
 
